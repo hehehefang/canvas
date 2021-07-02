@@ -10,29 +10,56 @@
 </head>
 
 <body>
-    <div id="canvas"></div>
+    <!-- <div id="canvas"></div> -->
+    <canvas id="canvas" width="100" height="100"></canvas>
+
 
     <script>
-        canvas.onclick = (e) => {  //id是全局变量   可以直接拿到使用
-            console.log('被点击了')
-            console.log(e)//找到坐标点   可以点击左上角来确定谁是想要找的的坐标  
-            console.log(e.clientX)   //确定坐标
-            console.log(e.clientY)
-            //创建一个div放到鼠标点击的位置  
-            let div = document.createElement('div')
+        // canvas.onmousemove = (e) => {  //id是全局变量   可以直接拿到使用   onclick 只能打出坐标   onmousemove 能连续打出坐标,而且很卡  这是don操作慢  这是就需要canvas
+        //     console.log('被点击了')
+        //     console.log(e)//找到坐标点   可以点击左上角来确定谁是想要找的的坐标  
+        //     console.log(e.clientX)   //确定坐标
+        //     console.log(e.clientY)
+        //     //创建一个div放到鼠标点击的位置  
+        //     let div = document.createElement('div')
 
-            div.style.position = 'absolute'
-            div.style.left = e.clientX + 'px'
-            div.style.top = e.clientY + 'px'
-            div.style.width = '8px'
-            div.style.height = '8px'
-            div.style.border = '1px solid red'
-            div.style.marginLeft = '-4px'  //让鼠标出现在正中心    可用translate做吗？？？
-            div.style.marginTop = '-4px'
-            div.style.borderRadius = '50%'
-            div.style.backgroundColor = 'red'
-            canvas.appendChild(div)
+        //     div.style.position = 'absolute'
+        //     div.style.left = e.clientX + 'px'
+        //     div.style.top = e.clientY + 'px'
+        //     div.style.width = '8px'
+        //     div.style.height = '8px'
+        //     div.style.border = '1px solid red'
+        //     div.style.marginLeft = '-4px'  //让鼠标出现在正中心    可用translate做吗？？？
+        //     div.style.marginTop = '-4px'
+        //     div.style.borderRadius = '50%'
+        //     div.style.backgroundColor = 'red'
+        //     canvas.appendChild(div)
+        // }
+
+        let canvas = document.getElementById('canvas');
+        canvas.width = document.documentElement.clientWidth  //获取屏幕是宽高
+        canvas.height = document.documentElement.clientHeight
+        let ctx = canvas.getContext("2d");
+
+        //画线
+        let pressed = false;
+
+        ctx.fillStyle = 'red'; //填充颜色
+        canvas.onmousedown = () => {
+            pressed = true;
         }
+
+        canvas.onmousemove = (e) => {
+            if (pressed === true) {
+                ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10)  //坐标 x y  宽高 w h
+            } else {
+
+            }
+        }
+        canvas.onmouseup = () => {
+            pressed = false;
+        }
+
     </script>
 
 </body>
