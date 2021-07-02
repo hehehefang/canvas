@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="canvas"></div>
+
+    <script>
+        canvas.onclick = (e) => {  //id是全局变量   可以直接拿到使用
+            console.log('被点击了')
+            console.log(e)//找到坐标点   可以点击左上角来确定谁是想要找的的坐标  
+            console.log(e.clientX)   //确定坐标
+            console.log(e.clientY)
+            //创建一个div放到鼠标点击的位置  
+            let div = document.createElement('div')
+
+            div.style.position = 'absolute'
+            div.style.left = e.clientX + 'px'
+            div.style.top = e.clientY + 'px'
+            div.style.width = '8px'
+            div.style.height = '8px'
+            div.style.border = '1px solid red'
+            div.style.marginLeft = '-4px'  //让鼠标出现在正中心    可用translate做吗？？？
+            div.style.marginTop = '-4px'
+            div.style.borderRadius = '50%'
+            div.style.backgroundColor = 'red'
+            canvas.appendChild(div)
+        }
+    </script>
+
+</body>
+
+</html>
