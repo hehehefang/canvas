@@ -15,50 +15,57 @@
 
 
     <script>
-        // canvas.onmousemove = (e) => {  //id是全局变量   可以直接拿到使用   onclick 只能打出坐标   onmousemove 能连续打出坐标,而且很卡  这是don操作慢  这是就需要canvas
-        //     console.log('被点击了')
-        //     console.log(e)//找到坐标点   可以点击左上角来确定谁是想要找的的坐标  
-        //     console.log(e.clientX)   //确定坐标
-        //     console.log(e.clientY)
-        //     //创建一个div放到鼠标点击的位置  
-        //     let div = document.createElement('div')
-
-        //     div.style.position = 'absolute'
-        //     div.style.left = e.clientX + 'px'
-        //     div.style.top = e.clientY + 'px'
-        //     div.style.width = '8px'
-        //     div.style.height = '8px'
-        //     div.style.border = '1px solid red'
-        //     div.style.marginLeft = '-4px'  //让鼠标出现在正中心    可用translate做吗？？？
-        //     div.style.marginTop = '-4px'
-        //     div.style.borderRadius = '50%'
-        //     div.style.backgroundColor = 'red'
-        //     canvas.appendChild(div)
-        // }
-
         let canvas = document.getElementById('canvas');
-        canvas.width = document.documentElement.clientWidth  //获取屏幕是宽高
+        canvas.width = document.documentElement.clientWidth  //获取屏幕的宽高
         canvas.height = document.documentElement.clientHeight
         let ctx = canvas.getContext("2d");
+        ctx.fillStyle = 'black'; //填充颜色
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
 
         //画线
         let pressed = false;
+        let last;
 
-        ctx.fillStyle = 'red'; //填充颜色
-        canvas.onmousedown = () => {
-            pressed = true;
-        }
-
-        canvas.onmousemove = (e) => {
-            if (pressed === true) {
-                ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10)  //坐标 x y  宽高 w h
-            } else {
-
+        let isTouchDevice = 'ontouchstart' in document.documentElement;
+        if (isTouchDevice) {
+            canvas.ontouchmove = (e) => {
+                let x = e.touches[0].clientX
+                let y = e.touches[0].clientY
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
             }
+        } else {
+
+            canvas.onmousedown = (e) => {
+                pressed = true;
+                last = [e.clientX, e.clientY];
+            }
+
+            canvas.onmousemove = (e) => {
+                if (pressed === true) {
+                    drawLine(last[0], last[1], e.clientX, e.clientY);
+                    last = [e.clientX, e.clientY];
+
+                }
+            }
+            canvas.onmouseup = () => {
+                pressed = false;
+            }
+
         }
-        canvas.onmouseup = () => {
-            pressed = false;
+
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
+
+
 
     </script>
 
